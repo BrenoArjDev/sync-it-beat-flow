@@ -169,12 +169,6 @@ export const MusicNewsSection = () => {
             </Card>
           ))}
         </div>
-
-        <div className="text-center mt-12">
-          <Button variant="music" size="lg">
-            Load More News
-          </Button>
-        </div>
       </div>
     </section>
   );

@@ -87,7 +87,7 @@ export const CommunitySection = () => {
     <section id="community" className="py-20 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 gradient-primary bg-clip-text text-transparent">
+          <h2 className="text-[0.5rem] rounded-lg font-bold mb-4 gradient-primary bg-clip-text text-transparent">
             Join Our Community
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
