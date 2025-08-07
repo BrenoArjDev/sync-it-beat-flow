@@ -14,7 +14,169 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      discussion_likes: {
+        Row: {
+          created_at: string
+          discussion_id: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          discussion_id: string
+          id?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          discussion_id?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discussion_likes_discussion_id_fkey"
+            columns: ["discussion_id"]
+            isOneToOne: false
+            referencedRelation: "discussions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      discussion_replies: {
+        Row: {
+          content: string
+          created_at: string
+          discussion_id: string
+          id: string
+          updated_at: string
+          user_id: string | null
+          username: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          discussion_id: string
+          id?: string
+          updated_at?: string
+          user_id?: string | null
+          username?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          discussion_id?: string
+          id?: string
+          updated_at?: string
+          user_id?: string | null
+          username?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "discussion_replies_discussion_id_fkey"
+            columns: ["discussion_id"]
+            isOneToOne: false
+            referencedRelation: "discussions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      discussions: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          likes_count: number
+          replies_count: number
+          updated_at: string
+          user_id: string | null
+          username: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          likes_count?: number
+          replies_count?: number
+          updated_at?: string
+          user_id?: string | null
+          username?: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          likes_count?: number
+          replies_count?: number
+          updated_at?: string
+          user_id?: string | null
+          username?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_favorites: {
+        Row: {
+          artist: string
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          type: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          artist: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          type: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          artist?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          type?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
