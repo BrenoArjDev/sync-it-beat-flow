@@ -9,6 +9,11 @@ export const Navbar = () => {
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    element?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,20 +28,20 @@ export const Navbar = () => {
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
               <a
-                href="#news"
-                className="text-white/80 hover:text-white transition-smooth"
+                className="text-white/80 hover:text-white transition-smooth cursor-pointer"
+                onClick={() => scrollToSection("news")}
               >
                 News
               </a>
               <a
-                href="#features"
-                className="text-white/80 hover:text-white transition-smooth"
+                className="text-white/80 hover:text-white transition-smooth cursor-pointer"
+                onClick={() => scrollToSection("features")}
               >
                 Features
               </a>
               <a
-                href="#community"
-                className="text-white/80 hover:text-white transition-smooth"
+                className="text-white/80 hover:text-white transition-smooth cursor-pointer"
+                onClick={() => scrollToSection("community")}
               >
                 Community
               </a>
@@ -104,28 +109,22 @@ export const Navbar = () => {
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-black/40 backdrop-blur-md rounded-lg mt-2">
               <a
-                href="#news"
+                onClick={() => scrollToSection("news")}
                 className="text-white/80 hover:text-white block px-3 py-2 transition-smooth"
               >
                 News
               </a>
               <a
-                href="#features"
+                onClick={() => scrollToSection("features")}
                 className="text-white/80 hover:text-white block px-3 py-2 transition-smooth"
               >
                 Features
               </a>
               <a
-                href="#community"
+                onClick={() => scrollToSection("community")}
                 className="text-white/80 hover:text-white block px-3 py-2 transition-smooth"
               >
                 Community
-              </a>
-              <a
-                href="#player"
-                className="text-white/80 hover:text-white block px-3 py-2 transition-smooth"
-              >
-                Player
               </a>
               <div className="pt-4 pb-3 border-t border-white/10">
                 {!loading &&
