@@ -155,13 +155,13 @@ export const FavoritesSection = () => {
                           alt={item.name}
                           className="w-16 h-16 rounded-lg object-cover group-hover:scale-105 transition-smooth"
                         />
-                        <Button 
+                        {/* <Button 
                           variant="ghost" 
                           size="icon"
                           className="absolute inset-0 bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-smooth"
                         >
                           <Play className="w-5 h-5" />
-                        </Button>
+                        </Button> */}
                       </div>
 
                       <div className="flex-1">

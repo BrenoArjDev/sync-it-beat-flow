@@ -36,6 +36,8 @@ export const MusicPlayer = () => {
   const [isShuffle, setIsShuffle] = useState(false);
   const [isRepeat, setIsRepeat] = useState(false);
 
+  const musicPlayerRef = useRef<HTMLDivElement>(null);
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const clientId = "34419d7c";
@@ -115,6 +117,29 @@ export const MusicPlayer = () => {
 
     return () => cancelAnimationFrame(animationFrameId);
   }, [isSeeking, isPlaying]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (musicPlayerRef.current && !musicPlayerRef.current.contains(target)) {
+        setIsExpanded(false);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsExpanded(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const currentTrack = tracks[currentIndex];
 
@@ -219,7 +244,10 @@ export const MusicPlayer = () => {
       {/* Expanded Player Modal */}
       {isExpanded && (
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <Card className="w-full max-w-lg gradient-card border-music-gray shadow-glow">
+          <Card
+            ref={musicPlayerRef}
+            className="max-h-[500px] overflow-auto md:max-h-[100%] w-full max-w-lg gradient-card border-music-gray shadow-glow"
+          >
             <div className="p-8">
               {/* Close Button */}
               <div className="flex justify-end mb-4">

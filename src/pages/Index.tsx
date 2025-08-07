@@ -6,6 +6,7 @@ import { FeaturesSection } from "@/components/FeaturesSection";
 import { CommunitySection } from "@/components/CommunitySection";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { Footer } from "@/components/Footer";
+import { ScrollToTopButton } from "@/components/ScrollToTopButton";
 
 const Index = () => {
   return (
@@ -18,6 +19,7 @@ const Index = () => {
       <CommunitySection />
       <Footer />
       <MusicPlayer />
+      <ScrollToTopButton />
     </div>
   );
 };
