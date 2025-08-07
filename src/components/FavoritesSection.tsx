@@ -150,7 +150,8 @@ export const FavoritesSection = () => {
                     <div className="flex items-center gap-4">
                       <div className="relative">
                         <img 
-                          src={item.image_url || `https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop`}
+                          // src={item.image_url || `https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop`}
+                          src={`https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=300&h=300&fit=crop`}
                           alt={item.name}
                           className="w-16 h-16 rounded-lg object-cover group-hover:scale-105 transition-smooth"
                         />

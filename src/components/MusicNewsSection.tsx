@@ -1,59 +1,21 @@
+import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Globe, Clock, Heart, MessageSquare, Filter } from "lucide-react";
 
-const newsItems = [
-  {
-    id: 1,
-    title: "Arctic Monkeys announce surprise album release",
-    excerpt:
-      "The Sheffield band reveals their seventh studio album will drop next month, featuring collaborations with various international artists.",
-    country: "UK",
-    category: "Rock",
-    time: "2 hours ago",
-    likes: 156,
-    comments: 23,
-    image:
-      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=250&fit=crop",
-  },
-  {
-    id: 2,
-    title: "K-Pop sensation BLACKPINK breaks streaming records",
-    excerpt:
-      "Latest single surpasses 100 million streams in just 48 hours, setting new milestone for Korean music globally.",
-    country: "South Korea",
-    category: "K-Pop",
-    time: "4 hours ago",
-    likes: 892,
-    comments: 156,
-    image:
-      "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=250&fit=crop",
-  },
-  {
-    id: 3,
-    title: "Brazilian funk artist Anitta wins Latin Grammy",
-    excerpt:
-      "Recognition for 'Best Contemporary Pop Vocal Album' brings international spotlight to Brazilian music scene.",
-    country: "Brazil",
-    category: "Latin",
-    time: "6 hours ago",
-    likes: 234,
-    comments: 67,
-    image:
-      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop",
-  },
-];
+const countries = ["All", "BR", "PT", "US", "CA", "CN", "JP"];
 
-const countries = [
-  "All",
-  "UK",
-  "USA",
-  "South Korea",
-  "Brazil",
-  "Japan",
-  "Germany",
-];
+const countryLangMap: Record<string, string> = {
+  BR: "pt",
+  PT: "pt",
+  US: "en",
+  CA: "en",
+  CN: "zh",
+  JP: "ja",
+  All: "en",
+};
+
 const categories = [
   "All",
   "Rock",
@@ -64,7 +26,70 @@ const categories = [
   "Hip-Hop",
 ];
 
+export interface NewsApiResponse {
+  totalArticles: number;
+  articles: NewsArticle[];
+}
+
+export interface NewsArticle {
+  id: string;
+  title: string;
+  description: string;
+  content: string;
+  url: string;
+  image: string;
+  publishedAt: string; // ISO string format
+  source: NewsSource;
+}
+
+export interface NewsSource {
+  id: string;
+  name: string;
+  url: string;
+}
+
 export const MusicNewsSection = () => {
+  const [selectedCountry, setSelectedCountry] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [news, setNews] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const API_KEY = "d7262b70de56f32c36177287eed8325a";
+
+  const fetchNews = async (country: string, category: string) => {
+    setLoading(true);
+    const lang = countryLangMap[country] || "en";
+    const query =
+      category === "All" ? "music" : `${category.toLowerCase()} music`;
+    const params = new URLSearchParams({
+      token: API_KEY,
+      q: query,
+      lang: lang,
+    });
+    if (country !== "All") params.set("country", country.toLowerCase());
+
+    try {
+      const res = await fetch(`https://gnews.io/api/v4/search?${params}`);
+      if (!res.ok) throw new Error("Failed to fetch news");
+      const data = await res.json();
+      setNews(data.articles || []);
+    } catch (err) {
+      console.error(err);
+      setNews([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      fetchNews(selectedCountry, selectedCategory);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, [selectedCountry, selectedCategory]);
+
   return (
     <section id="news" className="py-20 px-4">
       <div className="max-w-7xl mx-auto">
@@ -79,24 +104,25 @@ export const MusicNewsSection = () => {
         <div className="flex flex-wrap gap-4 mb-8 justify-center">
           <div className="flex flex-wrap gap-2">
             <Button variant="glass" size="sm">
-              <Filter className="w-4 h-4 mr-2" />
-              Filters
+              <Filter className="w-4 h-4 mr-2" /> Filters
             </Button>
-            {countries.slice(0, 4).map((country) => (
+            {countries.map((country) => (
               <Badge
                 key={country}
-                variant="secondary"
+                variant={selectedCountry === country ? "default" : "secondary"}
                 className="cursor-pointer hover:bg-primary transition-smooth"
+                onClick={() => setSelectedCountry(country)}
               >
                 <Globe className="w-3 h-3 mr-1" />
                 {country}
               </Badge>
             ))}
-            {categories.slice(0, 4).map((category) => (
+            {categories.map((category) => (
               <Badge
                 key={category}
-                variant="outline"
+                variant={selectedCategory === category ? "default" : "outline"}
                 className="cursor-pointer hover:bg-primary hover:text-white transition-smooth"
+                onClick={() => setSelectedCategory(category)}
               >
                 {category}
               </Badge>
@@ -104,63 +130,54 @@ export const MusicNewsSection = () => {
           </div>
         </div>
 
+        {/* Loading State */}
+        {loading && (
+          <div className="text-center text-muted-foreground my-8">
+            Loading news…
+          </div>
+        )}
+
         {/* News Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {newsItems.map((item) => (
+          {news.map((item, index) => (
             <Card
-              key={item.id}
+              key={index}
               className="overflow-hidden gradient-card border-music-gray hover:shadow-hover transition-smooth group cursor-pointer"
             >
               <div className="relative">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-48 object-cover group-hover:scale-105 transition-smooth"
-                />
-                <div className="absolute top-3 left-3 flex gap-2">
-                  <Badge variant="secondary" className="bg-black/60 text-white">
-                    <Globe className="w-3 h-3 mr-1" />
-                    {item.country}
-                  </Badge>
-                  <Badge
-                    variant="outline"
-                    className="bg-black/60 border-white/20 text-white"
-                  >
-                    {item.category}
-                  </Badge>
-                </div>
+                {item.image && (
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-48 object-cover group-hover:scale-105 transition-smooth"
+                  />
+                )}
               </div>
-
               <div className="p-6">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                   <Clock className="w-4 h-4" />
-                  {item.time}
+                  {new Date(item.publishedAt).toLocaleString()}
                 </div>
-
                 <h3 className="text-lg font-semibold mb-3 text-white group-hover:text-primary transition-smooth">
                   {item.title}
                 </h3>
-
                 <p className="text-muted-foreground mb-4 leading-relaxed">
-                  {item.excerpt}
+                  {item.description || item.content || ""}
                 </p>
-
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
                     <div className="flex items-center gap-1 hover:text-music-pink transition-smooth cursor-pointer">
-                      <Heart className="w-4 h-4" />
-                      {item.likes}
+                      <Heart className="w-4 h-4" />0
                     </div>
                     <div className="flex items-center gap-1 hover:text-music-blue transition-smooth cursor-pointer">
-                      <MessageSquare className="w-4 h-4" />
-                      {item.comments}
+                      <MessageSquare className="w-4 h-4" />0
                     </div>
                   </div>
-
                   <Button
                     variant="ghost"
                     size="sm"
                     className="text-primary hover:text-white hover:bg-primary"
+                    onClick={() => window.open(item.url, "_blank")}
                   >
                     Read More
                   </Button>
