@@ -41,10 +41,7 @@ const footerSections = [
 ];
 
 const musicAPIs = [
-  { name: "Spotify", logo: "🎵" },
-  { name: "Deezer", logo: "🎶" },
   { name: "Jamendo", logo: "🎧" },
-  { name: "SoundCloud", logo: "☁️" }
 ];
 
 export const Footer = () => {

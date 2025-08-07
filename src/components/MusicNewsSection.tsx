@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Globe, Clock, Heart, MessageSquare, Filter } from "lucide-react";
+import { newsItems } from "@/utils/newsMock";
 
 const countries = ["All", "BR", "PT", "US", "CA", "CN", "JP"];
 
@@ -54,6 +55,7 @@ export const MusicNewsSection = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [news, setNews] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(true);
 
   const API_KEY = "d7262b70de56f32c36177287eed8325a";
 
@@ -76,7 +78,7 @@ export const MusicNewsSection = () => {
       setNews(data.articles || []);
     } catch (err) {
       console.error(err);
-      setNews([]);
+      setNews(newsItems); 
     } finally {
       setLoading(false);
     }
@@ -103,30 +105,47 @@ export const MusicNewsSection = () => {
         {/* Filters */}
         <div className="flex flex-wrap gap-4 mb-8 justify-center">
           <div className="flex flex-wrap gap-2">
-            <Button variant="glass" size="sm">
+            <Button
+              variant="glass"
+              size="sm"
+              onClick={() => setFiltersOpen((prev) => !prev)}
+            >
               <Filter className="w-4 h-4 mr-2" /> Filters
             </Button>
-            {countries.map((country) => (
-              <Badge
-                key={country}
-                variant={selectedCountry === country ? "default" : "secondary"}
-                className="cursor-pointer hover:bg-primary transition-smooth"
-                onClick={() => setSelectedCountry(country)}
-              >
-                <Globe className="w-3 h-3 mr-1" />
-                {country}
-              </Badge>
-            ))}
-            {categories.map((category) => (
-              <Badge
-                key={category}
-                variant={selectedCategory === category ? "default" : "outline"}
-                className="cursor-pointer hover:bg-primary hover:text-white transition-smooth"
-                onClick={() => setSelectedCategory(category)}
-              >
-                {category}
-              </Badge>
-            ))}
+          </div>
+
+          <div
+            className={`overflow-hidden transition-all duration-500 ease-in-out ${
+              filtersOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
+            }`}
+          >
+            <div className="flex flex-wrap gap-2 mt-2 justify-center">
+              {countries.map((country) => (
+                <Badge
+                  key={country}
+                  variant={
+                    selectedCountry === country ? "default" : "secondary"
+                  }
+                  className="cursor-pointer hover:bg-primary transition-smooth"
+                  onClick={() => setSelectedCountry(country)}
+                >
+                  <Globe className="w-3 h-3 mr-1" />
+                  {country}
+                </Badge>
+              ))}
+              {categories.map((category) => (
+                <Badge
+                  key={category}
+                  variant={
+                    selectedCategory === category ? "default" : "outline"
+                  }
+                  className="cursor-pointer hover:bg-primary hover:text-white transition-smooth"
+                  onClick={() => setSelectedCategory(category)}
+                >
+                  {category}
+                </Badge>
+              ))}
+            </div>
           </div>
         </div>
 
