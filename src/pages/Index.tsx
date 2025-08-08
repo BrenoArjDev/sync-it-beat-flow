@@ -7,8 +7,10 @@ import { CommunitySection } from "@/components/CommunitySection";
 import { MusicPlayer } from "@/components/MusicPlayer";
 import { Footer } from "@/components/Footer";
 import { ScrollToTopButton } from "@/components/ScrollToTopButton";
+import { useState } from "react";
 
 const Index = () => {
+  const [isMusicPlayerExpanded, setIsMusicPlayerExpanded] = useState(false);
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -18,8 +20,8 @@ const Index = () => {
       <FeaturesSection />
       <CommunitySection />
       <Footer />
-      <MusicPlayer />
-      <ScrollToTopButton />
+      <MusicPlayer onExpandChange={setIsMusicPlayerExpanded} />
+      {!isMusicPlayerExpanded && <ScrollToTopButton />}
     </div>
   );
 };

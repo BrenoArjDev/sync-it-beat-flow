@@ -24,7 +24,11 @@ type Track = {
   duration: number;
 };
 
-export const MusicPlayer = () => {
+type MusicPlayerProps = {
+  onExpandChange?: (expanded: boolean) => void;
+};
+
+export const MusicPlayer = ({ onExpandChange }: MusicPlayerProps) => {
   const [isSeeking, setIsSeeking] = useState(false);
   const [seekValue, setSeekValue] = useState(0);
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -41,6 +45,12 @@ export const MusicPlayer = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const clientId = "34419d7c";
+
+  useEffect(() => {
+    if (onExpandChange) {
+      onExpandChange(isExpanded);
+    }
+  }, [isExpanded, onExpandChange]);
 
   useEffect(() => {
     fetch(
@@ -246,7 +256,7 @@ export const MusicPlayer = () => {
         <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
           <Card
             ref={musicPlayerRef}
-            className="max-h-[500px] overflow-auto md:max-h-[100%] w-full max-w-lg gradient-card border-music-gray shadow-glow"
+            className="max-h-[605px] overflow-auto md:max-h-[100%] w-full max-w-lg gradient-card border-music-gray shadow-glow"
           >
             <div className="p-8">
               {/* Close Button */}
