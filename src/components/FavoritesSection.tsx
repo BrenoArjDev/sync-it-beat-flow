@@ -46,7 +46,10 @@ export const FavoritesSection = () => {
         .limit(10);
 
       if (error) throw error;
-      setFavorites(data || []);
+      setFavorites((data || []).map(item => ({
+        ...item,
+        type: item.type as 'artist' | 'album'
+      })));
     } catch (error) {
       console.error('Error fetching favorites:', error);
     }

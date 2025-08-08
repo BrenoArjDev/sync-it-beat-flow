@@ -3,6 +3,7 @@ import { Music2, Menu, X, LogOut, User } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -50,6 +51,7 @@ export const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
+            <ThemeToggle />
             {!loading &&
               (user ? (
                 <div className="flex items-center space-x-3">
@@ -127,6 +129,9 @@ export const Navbar = () => {
                 Community
               </a>
               <div className="pt-4 pb-3 border-t border-white/10">
+                <div className="px-3 mb-3">
+                  <ThemeToggle />
+                </div>
                 {!loading &&
                   (user ? (
                     <div className="px-3 space-y-3">
