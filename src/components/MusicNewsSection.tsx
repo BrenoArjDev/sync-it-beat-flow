@@ -162,6 +162,7 @@ export const MusicNewsSection = () => {
             <Card
               key={index}
               className="overflow-hidden gradient-card border-music-gray hover:shadow-hover transition-smooth group cursor-pointer"
+              onClick={() => window.open(item.url, "_blank")}
             >
               <div className="relative">
                 {item.image && (
@@ -185,21 +186,28 @@ export const MusicNewsSection = () => {
                 </p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-1 hover:text-music-pink transition-smooth cursor-pointer">
+                    <div 
+                      className="flex items-center gap-1 hover:text-music-pink transition-smooth cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // Handle like functionality here if needed
+                      }}
+                    >
                       <Heart className="w-4 h-4" />0
                     </div>
-                    <div className="flex items-center gap-1 hover:text-music-blue transition-smooth cursor-pointer">
+                    <div 
+                      className="flex items-center gap-1 hover:text-music-blue transition-smooth cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // Handle comment functionality here if needed
+                      }}
+                    >
                       <MessageSquare className="w-4 h-4" />0
                     </div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-primary hover:text-white hover:bg-primary"
-                    onClick={() => window.open(item.url, "_blank")}
-                  >
-                    Read More
-                  </Button>
+                  <div className="text-sm text-primary font-medium group-hover:text-white transition-smooth">
+                    Read More →
+                  </div>
                 </div>
               </div>
             </Card>
