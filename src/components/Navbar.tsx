@@ -51,7 +51,7 @@ export const Navbar = () => {
 
           {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <ThemeToggle />
+            {/* <ThemeToggle /> */}
             {!loading &&
               (user ? (
                 <div className="flex items-center space-x-3">
@@ -130,7 +130,7 @@ export const Navbar = () => {
               </a>
               <div className="pt-4 pb-3 border-t border-white/10">
                 <div className="px-3 mb-3">
-                  <ThemeToggle />
+                  {/* <ThemeToggle /> */}
                 </div>
                 {!loading &&
                   (user ? (
